@@ -1,5 +1,5 @@
 // Telegram webhook: https://SAYT/api/bot
-import { tg, sb, money, esc, miniAppUrl, siteUrl, env } from "./_lib.js";
+import { tg, sb, money, esc, miniAppUrl, siteUrl, webhookSecret } from "./_lib.js";
 
 const MENU = { keyboard: [[{ text: "💰 Qarzim" }, { text: "ℹ️ Yordam" }]], resize_keyboard: true };
 
@@ -51,7 +51,7 @@ async function handleStart(req, chatId, payload, firstName) {
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(200).send("Nasiya bot ishlayapti ✅");
-  if (req.headers["x-telegram-bot-api-secret-token"] !== env("WEBHOOK_SECRET")) return res.status(401).end();
+  if (req.headers["x-telegram-bot-api-secret-token"] !== webhookSecret()) return res.status(401).end();
 
   const msg = req.body?.message;
   try {

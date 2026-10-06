@@ -1,14 +1,13 @@
-// Bir martalik sozlash: https://SAYT/api/setup?key=WEBHOOK_SECRET
-// Webhook, buyruqlar, bot tavsifi va Menu tugmasini o'rnatadi.
-import { tg, env, siteUrl } from "./_lib.js";
+// Bir martalik sozlash: https://SAYT/api/setup
+// Webhook, buyruqlar, bot tavsifi va Menu tugmasini o'rnatadi (faqat shu saytga yo'naltiradi).
+import { tg, siteUrl, webhookSecret } from "./_lib.js";
 
 export default async function handler(req, res) {
   try {
-    if (req.query.key !== env("WEBHOOK_SECRET")) return res.status(401).send("Kalit noto'g'ri");
     const site = siteUrl(req);
     const out = {};
     out.webhook = await tg("setWebhook", {
-      url: `${site}/api/bot`, secret_token: env("WEBHOOK_SECRET"),
+      url: `${site}/api/bot`, secret_token: webhookSecret(),
       allowed_updates: ["message"], drop_pending_updates: true,
     });
     out.commands = await tg("setMyCommands", {
